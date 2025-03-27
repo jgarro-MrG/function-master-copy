@@ -3,15 +3,16 @@
 //////////////////////////////////////////////////////////////////////
 
 function objectValues(object) {
-    // code
-} 
+  return Object.values(object);
+}
 
 //////////////////////////////////////////////////////////////////////
 // Function 2 - Keys to String ///////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
 function keysToString(object) {
-
+  const arrayOfKeys = Object.keys(object);
+  return arrayOfKeys.join(" ");
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -19,7 +20,14 @@ function keysToString(object) {
 //////////////////////////////////////////////////////////////////////
 
 function valuesToString(object) {
-    
+  let values = Object.values(object);
+  values.forEach(function (value) {
+    if (typeof value !== "string") {
+      const index = values.indexOf(value);
+      values.splice(index, 1);
+    }
+  });
+  return values.join(" ");
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -27,7 +35,11 @@ function valuesToString(object) {
 //////////////////////////////////////////////////////////////////////
 
 function arrayOrObject(collection) {
-    
+  if (Array.isArray(collection)) {
+    return "array";
+  } else {
+    return "object";
+  }
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -35,7 +47,19 @@ function arrayOrObject(collection) {
 //////////////////////////////////////////////////////////////////////
 
 function capitalizeWord(string) {
-    
+  var output = "";
+  for (var i = 0; i < string.length; i++) {
+    if (i === 0) {
+      output += string[i].toUpperCase();
+    } else {
+      if (string[i - 1] === " ") {
+        output += string[i].toUpperCase();
+      } else {
+        output += string[i];
+      }
+    }
+  }
+  return output;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -43,7 +67,19 @@ function capitalizeWord(string) {
 //////////////////////////////////////////////////////////////////////
 
 function capitalizeAllWords(string) {
-    
+  var output = "";
+  for (var i = 0; i < string.length; i++) {
+    if (i === 0) {
+      output += string[i].toUpperCase();
+    } else {
+      if (string[i - 1] === " ") {
+        output += string[i].toUpperCase();
+      } else {
+        output += string[i];
+      }
+    }
+  }
+  return output;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -51,7 +87,8 @@ function capitalizeAllWords(string) {
 //////////////////////////////////////////////////////////////////////
 
 function welcomeMessage(object) {
-
+  const name = capitalizeWord(object.name);
+  return `Welcome ${name}!`;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -59,7 +96,9 @@ function welcomeMessage(object) {
 //////////////////////////////////////////////////////////////////////
 
 function profileInfo(object) {
-
+  const name = capitalizeWord(object.name);
+  const species = capitalizeWord(object.species);
+  return `${name} is a ${species}`;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -67,7 +106,16 @@ function profileInfo(object) {
 //////////////////////////////////////////////////////////////////////
 
 function maybeNoises(object) {
-
+  const noises = object.noises;
+  if (noises != undefined) {
+    if (noises.length > 0) {
+      return object.noises.join(" ");
+    } else {
+      return "there are no noises";
+    }
+  } else {
+    return "there are no noises";
+  }
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -75,15 +123,16 @@ function maybeNoises(object) {
 //////////////////////////////////////////////////////////////////////
 
 function hasWord(string, word) {
-
+  return string.includes(word);
 }
 
 //////////////////////////////////////////////////////////////////////
 // Function 11 - Add Friend //////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-function addFriend (name, object) {
-
+function addFriend(name, object) {
+  object.friends.push(name);
+  return object;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -91,7 +140,12 @@ function addFriend (name, object) {
 //////////////////////////////////////////////////////////////////////
 
 function isFriend(name, object) {
-
+  const hasFriends = Object.keys(object).includes("friends");
+  if (hasFriends) {
+    return object.friends.includes(name);
+  } else {
+    return hasFriends;
+  }
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -99,7 +153,24 @@ function isFriend(name, object) {
 //////////////////////////////////////////////////////////////////////
 
 function nonFriends(name, array) {
-
+  let everyoneElse = [];
+  let friends = [];
+  let nonFriends = [];
+  array.forEach((person) => {
+    if (person.name !== name) {
+      everyoneElse.push(person.name);
+    } else {
+      friends = person.friends;
+    }
+  });
+  everyoneElse.forEach((one) => {
+    if (!friends.includes(one)) {
+      nonFriends.push(one);
+    }
+  });
+  console.log(everyoneElse);
+  console.log(friends);
+  return nonFriends;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -107,7 +178,8 @@ function nonFriends(name, array) {
 //////////////////////////////////////////////////////////////////////
 
 function updateObject(object, key, value) {
-
+    object[key] = value;
+    return object;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -115,7 +187,7 @@ function updateObject(object, key, value) {
 //////////////////////////////////////////////////////////////////////
 
 function removeProperties(object, array) {
-
+    array.forEach((key) => delete object[key]);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -123,30 +195,38 @@ function removeProperties(object, array) {
 //////////////////////////////////////////////////////////////////////
 
 function dedup(array) {
-
+    let newArray = [];
+    array.forEach((element) => {
+        if(!newArray.includes(element)) {
+            newArray.push(element);
+        }
+    });
+    return newArray;
 }
 
 //////////////////////////////////////////////////////////////////////
 // DON'T REMOVE THIS CODE ////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
 
-if((typeof process !== 'undefined') &&
-   (typeof process.versions.node !== 'undefined')) {
-    // here, export any references you need for tests //
-    module.exports.objectValues = objectValues;
-    module.exports.keysToString = keysToString;
-    module.exports.valuesToString = valuesToString;
-    module.exports.arrayOrObject = arrayOrObject;
-    module.exports.capitalizeWord = capitalizeWord;
-    module.exports.capitalizeAllWords = capitalizeAllWords;
-    module.exports.welcomeMessage = welcomeMessage;
-    module.exports.profileInfo = profileInfo;
-    module.exports.maybeNoises = maybeNoises;
-    module.exports.hasWord = hasWord;
-    module.exports.addFriend = addFriend;
-    module.exports.isFriend = isFriend;
-    module.exports.nonFriends = nonFriends;
-    module.exports.updateObject = updateObject;
-    module.exports.removeProperties = removeProperties;
-    module.exports.dedup = dedup;
+if (
+  typeof process !== "undefined" &&
+  typeof process.versions.node !== "undefined"
+) {
+  // here, export any references you need for tests //
+  module.exports.objectValues = objectValues;
+  module.exports.keysToString = keysToString;
+  module.exports.valuesToString = valuesToString;
+  module.exports.arrayOrObject = arrayOrObject;
+  module.exports.capitalizeWord = capitalizeWord;
+  module.exports.capitalizeAllWords = capitalizeAllWords;
+  module.exports.welcomeMessage = welcomeMessage;
+  module.exports.profileInfo = profileInfo;
+  module.exports.maybeNoises = maybeNoises;
+  module.exports.hasWord = hasWord;
+  module.exports.addFriend = addFriend;
+  module.exports.isFriend = isFriend;
+  module.exports.nonFriends = nonFriends;
+  module.exports.updateObject = updateObject;
+  module.exports.removeProperties = removeProperties;
+  module.exports.dedup = dedup;
 }
